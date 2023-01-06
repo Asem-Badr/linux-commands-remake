@@ -1,0 +1,13 @@
+ls 
+pwd
+touch 
+mkdir
+echo
+sleep
+cat
+grep
+head
+tail
+cd 
+rm
+cp
