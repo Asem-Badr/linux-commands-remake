@@ -1,0 +1,30 @@
+ A directive is one of the following:
+
+       •      A  sequence  of  white-space characters (space, tab, newline, etc.; see isspace(3)).  This
+              directive matches any amount of white space, including none, in the input.
+       •      An ordinary character (i.e., one other than white space or '%').  This character must  ex‐
+              actly match the next character of input.
+       •      A conversion specification, which commences with a '%' (percent) character.  A sequence of
+              characters from the input is converted according to this specification, and the result  is
+              placed  in  the  corresponding pointer argument.  If the next item of input does not match
+              the conversion specification, the conversion fails—this is a matching failure.
+
+       Each conversion specification in format begins with either the character '%' or the character se‐
+       quence "%n$" (see below for the distinction) followed by:
+
+       •      An  optional  '*' assignment-suppression character: scanf() reads input as directed by the
+              conversion specification, but discards the input.  No corresponding  pointer  argument  is
+              required,  and  this  specification is not included in the count of successful assignments
+              returned by scanf().
+
+       •      For decimal conversions, an optional quote character (').  This specifies that  the  input
+              number may include thousands' separators as defined by the LC_NUMERIC category of the cur‐
+              rent locale.  (See setlocale(3).)  The quote character may precede or follow the  '*'  as‐
+              signment-suppression character.
+
+       •      An  optional  'm'  character.   This is used with string conversions (%s, %c, %[), and re‐
+              lieves the caller of the need to allocate a corresponding buffer to hold  the  input:  in‐
+              stead, scanf() allocates a buffer of sufficient size, and assigns the address of this buf‐
+              fer to the corresponding pointer argument, which should be a pointer to a char *  variable
+              (this variable does not need to be initialized before the call).  The caller should subse‐
+              quently free(3) this buffer when it is no longer required.
