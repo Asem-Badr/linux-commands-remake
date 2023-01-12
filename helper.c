@@ -6,7 +6,8 @@ char* check_args(int argc , char **argv)
 {
     if(argc == 2 )
     {
-        printf("%s\n",argv[1]);
+        //the following line is used for depugging 
+        //printf("%s\n",argv[1]);
         return argv[1];
     }
     else if (argc >2 )
