@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <getopt.h>
 #include "helper.h"
+#include <stdio.h> 
 
 
 int main(int argc , char **argv)
@@ -10,10 +7,9 @@ int main(int argc , char **argv)
     FILE * file ;
     char buffer[buffer_size];
     file = fopen(check_args(argc,argv),"r");
-    for(int i = 0 ; i<10 ; i++)
+    while (fgets(buffer,buffer_size,file))
     {
-        fgets(buffer,buffer_size,file);
-        printf("%s",buffer);
+        printf("%s ",buffer);
     }
 
     fclose(file);
