@@ -19,7 +19,7 @@ int main(void)
         printf("unable to read this directory ");
         return 0;
     }
-    while(files = readdir(directory))
+    while((files = readdir(directory)))
     {
         /*readdir function returns a pointer to a dirent structrue representing 
           the next directory entry in the directory stream pointed to by 
