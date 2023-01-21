@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char* check_args(int argc , char **argv)
+char* one_arg(int argc , char **argv)
 {
     if(argc == 2 )
     {
@@ -18,5 +18,16 @@ char* check_args(int argc , char **argv)
     {
         printf("expected one file to be supplied \n");
         exit(1);
+    }
+}
+char** many_args(int argc , char **argv)
+{
+    if(argc >= 2)
+    {
+        return argv;
+    }
+    else
+    {
+        return NULL;
     }
 }

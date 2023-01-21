@@ -2,8 +2,8 @@
 #define HELPER_H
 
 #define buffer_size 1024
-char* check_args(int argc , char **arcv);
-
+char* one_arg(int argc , char **arcv);
+char** many_args(int argc ,char **argv);
 
 #endif
 

@@ -5,7 +5,7 @@
 
 int main (int argc , char **argv)
 {
-    FILE *file = fopen(check_args(argc,argv),"w+");
+    FILE *file = fopen(one_arg(argc,argv),"w+");
     fclose(file);
     return 0;
 }

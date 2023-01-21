@@ -6,7 +6,7 @@ int main(int argc , char **argv)
 {
     FILE * file ;
     char buffer[buffer_size];
-    file = fopen(check_args(argc,argv),"r");
+    file = fopen(one_arg(argc,argv),"r");
     while (fgets(buffer,buffer_size,file))
     {
         printf("%s ",buffer);
