@@ -3,25 +3,33 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/sysmacros.h>
+
 #define true 1
 #define false 0
 
-void check_options(int *a, int *f, int *la, int *lh, int argc, char **argv,char**buffer);
+void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv,char**buffer);
 int compareTwoString(char *a, char *b);
+void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh);
+
 int main(int argc ,char **argv)
 
 {
     DIR *directory;
-    int a=0,f=0,la=0,lh=0;//options flags
+    struct stat fileStat;
+    
+    int a=0,f=0,l=0,lh=0;//options flags
     char* buffer = NULL;
-    check_options(&a ,&f ,&la, &lh, argc ,argv ,&buffer);
+    check_options(&a ,&f ,&l, &lh, argc ,argv ,&buffer);
     //printf("\n\n%s\n\n",buffer); for debugging purposes
     struct dirent *files;
     int files_number = 0;
     if(buffer == NULL)
     {
         directory = opendir(".");
-    }else
+    }
+    else
     {
         directory = opendir(buffer);
     }
@@ -41,39 +49,29 @@ int main(int argc ,char **argv)
         files_number ++;
         //this is added so as not to show . .. directories and hidden ones
         if(files->d_name [0]=='.')continue; 
-        printf("%s \t",files->d_name);
-    }
-    //the following lines are for debugging purpose only
-    /*
-    printf("%d %d %d %d/n",a,f,la,lh);
-    printf("%s",buffer);
-    */
+        //printf("%s \t",files->d_name);
+        print_results((files->d_name), fileStat , a,  f,  l,  lh);
 
-    //printf("%d",strcmp(argv[1],"f"));
-    //************************************
+    }
+    
     printf("\n");
     closedir(directory);
     return 0;
 }
 
-void check_options(int *a, int *f, int *la, int *lh, int argc, char **argv ,char**buffer)
+void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char**buffer)
 {
     for(int i=1; i< argc ;i++)
     {   if (!compareTwoString(argv[i],"-a"))
-        {*a = true;
-        //the following lines are for debugging purposes only
-        /*printf("\n%d\n",i);
-        printf("%c\n",argv[1][0]);*/
-        }
+        *a = true;
         else if (!compareTwoString(argv[i],"-f"))
         *f =true;
-        else if (!compareTwoString(argv[i],"-la"))
-        *la = true;
+        else if (!compareTwoString(argv[i],"-l"))
+        *l = true;
         else if (!compareTwoString(argv[i],"-lh"))
         *lh = true;
         else if ((argv[i][0] != '-')&&(argv[i][0] != '.'))//not a flag nor . then it's a directory
         {*buffer = argv[i];}
-        //printf("\n\n%s\n\n",*buffer);}
         else 
         {
         printf("unknown option");
@@ -85,7 +83,7 @@ void check_options(int *a, int *f, int *la, int *lh, int argc, char **argv ,char
 int compareTwoString(char *a, char *b)
 {
     int flag = 0;
-    while (*a != '\0' && *b != '\0') // while loop
+    while (*a != '\0' && *b != '\0') 
     {
         if (*a != *b)
         {
@@ -100,4 +98,34 @@ int compareTwoString(char *a, char *b)
         return 0;
     else
         return 1;
+}
+
+void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
+{
+    printf("\n%d\n%s\n",l,file_name);
+    if(l==1)
+    {
+    if(stat(file_name, &fileStat) < 0)    
+        exit(1);
+
+    printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
+    printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXUSR) ? "x" : "-");
+    printf( (fileStat.st_mode & S_IRGRP) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWGRP) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXGRP) ? "x" : "-");
+    printf( (fileStat.st_mode & S_IROTH) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-");
+    printf("\t%s \t",file_name);
+    printf("\n");  
+
+    } 
+    else 
+    {
+        printf("\t%s \t",file_name);
+    }
+
+
 }
