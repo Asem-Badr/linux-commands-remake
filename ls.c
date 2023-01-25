@@ -2,12 +2,18 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <sys/types.h>
-
-
-int main(void)
+#include <string.h>
+#define true 1
+#define false 0
+void check_options(int *a, int *f, int *la, int *lh, int *argc, char **argv);
+int compareTwoString(char *a, char *b);
+int main(int argc ,char **argv)
 
 {
     DIR *directory;
+    int a=0,f=0,la=0,lh=0;
+    //check_options(&a ,&f ,&la, &lh, &argc ,argv);
+
     struct dirent *files;
     int files_number = 0;
     directory =opendir(".");
@@ -29,7 +35,42 @@ int main(void)
         if(files->d_name [0]=='.')continue; 
         printf("%s \t",files->d_name);
     }
+    //the following lines are for debugging purpose only
+    printf("%d %d %d %d",a,f,la,lh);
+    printf("%d",strcmp(argv[1],"f"));
+    //************************************
     printf("\n");
     closedir(directory);
     return 0;
+}
+
+void check_options(int *a, int *f, int *la, int *lh, int *argc, char **argv)
+{
+    for(int i=0; i< *argc ;i++)
+    {   
+        if (!compareTwoString(argv[i],"a"))
+        *a = 1;
+        else if (!compareTwoString(argv[i],"f"))
+        *f =true;
+    }
+    return;
+}
+int compareTwoString(char *a, char *b)
+{
+    int flag = 0;
+    while (*a != '\0' && *b != '\0') // while loop
+    {
+        if (*a != *b)
+        {
+            flag = 1;
+        }
+        a++;
+        b++;
+    }
+ if(*a!='\0'||*b!='\0')
+       return 1;
+    if (flag == 0)
+        return 0;
+    else
+        return 1;
 }

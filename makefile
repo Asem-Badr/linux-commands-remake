@@ -4,7 +4,7 @@ CFLAGS= -c -Wall
 
 
 # Executables
-all: touch cat ls pwd head echo
+all: touch cat ls pwd head echo tail
 
 touch: touch.o helper.o
 	$(CC) touch.o helper.o -o touch
@@ -23,6 +23,9 @@ head: head.o helper.o
 
 echo: echo.o helper.o
 	$(CC) echo.o helper.o -o echo
+
+tail: tail.o helper.o
+	$(CC) tail.o helper.o -o tail
 
 # .o files
 touch.o: touch.c
@@ -43,8 +46,13 @@ head.o: head.c
 echo.o :echo.c
 	$(CC) $(CFLAGS) echo.c
 
+tail.o: tail.c
+	$(CC) $(CFLAGS) tail.c
+
 helper.o: helper.c
 	$(CC) $(CFLAGS) helper.c
 
+
+
 clean:
-	rm -rf *.o touch cat ls pwd head echo
+	rm -rf *.o touch cat ls pwd head echo tail
