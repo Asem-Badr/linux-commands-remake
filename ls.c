@@ -12,8 +12,9 @@
 void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv,char**buffer);
 int compareTwoString(char *a, char *b);
 void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh);
-void print_file_names(char *file_name);
+void print_file_name(char *file_name);
 void print_permissions(char *file_name , struct stat fileStat);
+int check_if_hidden(char *file_name);
 int main(int argc ,char **argv)
 
 {
@@ -49,7 +50,7 @@ int main(int argc ,char **argv)
          directory pointer.*/
         files_number ++;
         //this is added so as not to show . .. directories and hidden ones
-        if(files->d_name [0]=='.')continue; 
+        //if(files->d_name [0]=='.')continue; 
         //printf("%s \t",files->d_name);
         print_results((files->d_name), fileStat , a,  f,  l,  lh);
 
@@ -81,6 +82,68 @@ void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char*
     }
     return;
 }
+
+
+void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
+{
+    //printf("\n%d\n%s\n",l,file_name);
+    if(a==true)
+    {
+        //if the flag is true show all file names including hidden ones
+        print_file_name(file_name);
+    }
+    else if (a == false)
+    {
+        if(check_if_hidden(file_name))return; //checking if the file is hidden 
+        else print_file_name(file_name);
+    }
+    else if(l==true)
+    {
+        print_permissions(file_name ,fileStat);
+    } 
+    else if(f==true)
+    {
+
+    }
+    else if(lh == true)
+    {
+
+    }
+    else
+    {
+        print_file_name(file_name);
+    }
+}
+void print_permissions(char *file_name , struct stat fileStat)
+{
+    if(stat(file_name, &fileStat) < 0)    
+        //exit(1);
+
+    printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
+    printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXUSR) ? "x" : "-");
+    printf( (fileStat.st_mode & S_IRGRP) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWGRP) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXGRP) ? "x" : "-");
+    printf( (fileStat.st_mode & S_IROTH) ? "r" : "-");
+    printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
+    printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-");
+    printf("\t%s \t",file_name);
+    printf("\n"); 
+    return ;
+}
+
+void print_file_name(char *file_name)
+{
+    printf("%s\t",file_name);
+}
+
+int check_if_hidden(char *file_name)
+{
+    return file_name[0] == '.';
+}
+
 int compareTwoString(char *a, char *b)
 {
     int flag = 0;
@@ -99,51 +162,4 @@ int compareTwoString(char *a, char *b)
         return 0;
     else
         return 1;
-}
-
-void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
-{
-    //printf("\n%d\n%s\n",l,file_name);
-    if(a==true)
-    {
-
-    }
-    else if(l==true)
-    {
-        print_permissions(file_name ,fileStat);
-    } 
-    else if(f==true)
-    {
-
-    }
-    else if(lh == true)
-    {
-
-    }
-    else
-    {
-        printf("%s \t",file_name);
-    }
-    
-
-
-}
-void print_permissions(char *file_name , struct stat fileStat)
-{
-    if(stat(file_name, &fileStat) < 0)    
-        exit(1);
-
-    printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
-    printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
-    printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-");
-    printf( (fileStat.st_mode & S_IXUSR) ? "x" : "-");
-    printf( (fileStat.st_mode & S_IRGRP) ? "r" : "-");
-    printf( (fileStat.st_mode & S_IWGRP) ? "w" : "-");
-    printf( (fileStat.st_mode & S_IXGRP) ? "x" : "-");
-    printf( (fileStat.st_mode & S_IROTH) ? "r" : "-");
-    printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
-    printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-");
-    printf("\t%s \t",file_name);
-    printf("\n"); 
-    return ;
 }
