@@ -12,7 +12,8 @@
 void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv,char**buffer);
 int compareTwoString(char *a, char *b);
 void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh);
-
+void print_file_names(char *file_name);
+void print_permissions(char *file_name , struct stat fileStat);
 int main(int argc ,char **argv)
 
 {
@@ -102,9 +103,33 @@ int compareTwoString(char *a, char *b)
 
 void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
 {
-    printf("\n%d\n%s\n",l,file_name);
-    if(l==1)
+    //printf("\n%d\n%s\n",l,file_name);
+    if(a==true)
     {
+
+    }
+    else if(l==true)
+    {
+        print_permissions(file_name ,fileStat);
+    } 
+    else if(f==true)
+    {
+
+    }
+    else if(lh == true)
+    {
+
+    }
+    else
+    {
+        printf("%s \t",file_name);
+    }
+    
+
+
+}
+void print_permissions(char *file_name , struct stat fileStat)
+{
     if(stat(file_name, &fileStat) < 0)    
         exit(1);
 
@@ -119,13 +144,6 @@ void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int
     printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
     printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-");
     printf("\t%s \t",file_name);
-    printf("\n");  
-
-    } 
-    else 
-    {
-        printf("\t%s \t",file_name);
-    }
-
-
+    printf("\n"); 
+    return ;
 }
