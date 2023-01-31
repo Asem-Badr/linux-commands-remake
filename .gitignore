@@ -1,0 +1,11 @@
+*.o
+text.txt
+commands_to_make.txt
+pwd
+touch
+cat
+ls
+head
+echo
+tail
+test
