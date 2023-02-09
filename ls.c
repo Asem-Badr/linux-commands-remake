@@ -5,9 +5,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
-
-#define true 1
-#define false 0
+#include <errno.h>
+#define TRUE 1
+#define FALSE 0
+#define OPTIONS_LENGTH 2
+char options[] = {'a','l'};
 
 void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv,char**buffer);
 int compareTwoString(char *a, char *b);
@@ -15,11 +17,12 @@ void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int
 void print_file_name(char *file_name);
 void print_permissions(char *file_name , struct stat fileStat);
 int check_if_hidden(char *file_name);
-int main(int argc ,char **argv)
 
+
+int main(int argc ,char **argv)
 {
     DIR *directory;
-    struct stat fileStat;
+    
     
     int a=0,f=0,l=0,lh=0;//options flags
     char* buffer = NULL;
@@ -40,18 +43,19 @@ int main(int argc ,char **argv)
     the stream is positioned at the first entry in the directory*/
     if(directory == NULL)
     {
-        printf("unable to read this directory ");
+        fprintf(stderr,"directory error: %s\n",strerror(errno));
         return 0;
     }
     while((files = readdir(directory)))
     {
-        /*readdir function returns a pointer to a dirent structrue representing 
+        /*readdir function returns a pointer to a dirent strucTRUE representing 
           the next directory entry in the directory stream pointed to by 
          directory pointer.*/
         files_number ++;
         //this is added so as not to show . .. directories and hidden ones
         //if(files->d_name [0]=='.')continue; 
         //printf("%s \t",files->d_name);
+        struct stat fileStat;
         print_results((files->d_name), fileStat , a,  f,  l,  lh);
 
     }
@@ -65,13 +69,13 @@ void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char*
 {
     for(int i=1; i< argc ;i++)
     {   if (!compareTwoString(argv[i],"-a"))
-        *a = true;
+        *a = TRUE;
         else if (!compareTwoString(argv[i],"-f"))
-        *f =true;
+        *f =TRUE;
         else if (!compareTwoString(argv[i],"-l"))
-        *l = true;
+        *l = TRUE;
         else if (!compareTwoString(argv[i],"-lh"))
-        *lh = true;
+        *lh = TRUE;
         else if ((argv[i][0] != '-')&&(argv[i][0] != '.'))//not a flag nor . then it's a directory
         {*buffer = argv[i];}
         else 
@@ -87,27 +91,27 @@ void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char*
 void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
 {
     //printf("\n%d\n%s\n",l,file_name);
-    if(a==true)
+    if(a==TRUE)
     {
-        //if the flag is true show all file names including hidden ones
+        //if the flag is TRUE show all file names including hidden ones
         print_file_name(file_name);
     }
-    else if (a == false)
-    {
-        if(check_if_hidden(file_name))return; //checking if the file is hidden 
-        else print_file_name(file_name);
-    }
-    else if(l==true)
+    else if(l==TRUE)
     {
         print_permissions(file_name ,fileStat);
     } 
-    else if(f==true)
+    else if(f==TRUE)
     {
 
     }
-    else if(lh == true)
+    else if(lh == TRUE)
     {
 
+    }
+    else if (a == FALSE)
+    {
+        if(check_if_hidden(file_name))return; //checking if the file is hidden 
+        else print_file_name(file_name);
     }
     else
     {
