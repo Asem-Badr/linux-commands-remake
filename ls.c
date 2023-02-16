@@ -121,8 +121,9 @@ void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int
 void print_permissions(char *file_name , struct stat fileStat)
 {
     if(stat(file_name, &fileStat) < 0)    
-        //exit(1);
-
+        {
+            //exit(1);
+        }
     printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
     printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
     printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-");

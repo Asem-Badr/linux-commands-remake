@@ -31,3 +31,11 @@ char** many_args(int argc , char **argv)
         return NULL;
     }
 }
+void saferFree(void **pp)
+{
+    if(pp != NULL && *pp != NULL)
+    {
+        free(*pp);
+        *pp = NULL;
+    }
+}
