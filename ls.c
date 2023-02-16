@@ -6,28 +6,16 @@
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
 #include <errno.h>
-#define TRUE 1
-#define FALSE 0
-#define OPTIONS_LENGTH 2
-char options[] = {'a','l'};
+#include "ls.h"
 
-void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv,char**buffer);
-int compareTwoString(char *a, char *b);
-void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh);
-void print_file_name(char *file_name);
-void print_permissions(char *file_name , struct stat fileStat);
-int check_if_hidden(char *file_name);
-
+//char options[] = {'a','l'};
 
 int main(int argc ,char **argv)
 {
     DIR *directory;
-    
-    
     int a=0,f=0,l=0,lh=0;//options flags
     char* buffer = NULL;
     check_options(&a ,&f ,&l, &lh, argc ,argv ,&buffer);
-    //printf("\n\n%s\n\n",buffer); for debugging purposes
     struct dirent *files;
     int files_number = 0;
     if(buffer == NULL)
@@ -80,7 +68,7 @@ void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char*
         {*buffer = argv[i];}
         else 
         {
-        printf("unknown option");
+        printf("unknown option\n");
         exit(1);
         }
     }
@@ -122,7 +110,8 @@ void print_permissions(char *file_name , struct stat fileStat)
 {
     if(stat(file_name, &fileStat) < 0)    
         {
-            //exit(1);
+            fprintf(stderr,"failure accessing file stat : %s\n",strerror(errno));
+            exit(1);
         }
     printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
     printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
