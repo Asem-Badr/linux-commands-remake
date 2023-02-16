@@ -7,7 +7,7 @@
 #include <sys/sysmacros.h>
 #include <errno.h>
 #include "ls.h"
-
+#include <unistd.h>
 //char options[] = {'a','l'};
 
 int main(int argc ,char **argv)
@@ -25,6 +25,7 @@ int main(int argc ,char **argv)
     else
     {
         directory = opendir(buffer);
+        chdir(buffer);
     }
     /*the opendir function opens a directory stream related to the directory 
     name and returns a pointer to the directory stream 
