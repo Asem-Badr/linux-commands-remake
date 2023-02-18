@@ -1,0 +1,11 @@
+ls :
+finding a way to check the option flags passed as args to the programm
+
+
+tial:
+making the output the same as the output of the original tail command
+
+
+searching for new commands to implement
+cp 
+rm

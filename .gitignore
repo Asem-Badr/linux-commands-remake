@@ -1,6 +1,6 @@
 *.o
 text.txt
-commands_to_make.txt
+todo.txt
 pwd
 touch
 cat
