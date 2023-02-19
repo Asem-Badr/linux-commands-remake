@@ -8,14 +8,17 @@
 #include <errno.h>
 #include "ls.h"
 #include <unistd.h>
-//char options[] = {'a','l'};
-
+/*
+print_results function should be implemented with the new approach
+start from line 46
+*/
+char options[] = {'a','l','f','h','d'};
+BOOL flags[]={FALSE,FALSE,FALSE,FALSE,FALSE};
 int main(int argc ,char **argv)
 {
     DIR *directory;
-    int a=0,f=0,l=0,lh=0;//options flags
     char* buffer = NULL;
-    check_options(&a ,&f ,&l, &lh, argc ,argv ,&buffer);
+    check_options(argc, argv);
     struct dirent *files;
     int files_number = 0;
     if(buffer == NULL)
@@ -41,45 +44,36 @@ int main(int argc ,char **argv)
           the next directory entry in the directory stream pointed to by 
          directory pointer.*/
         files_number ++;
-        //this is added so as not to show . .. directories and hidden ones
-        //if(files->d_name [0]=='.')continue; 
-        //printf("%s \t",files->d_name);
-        struct stat fileStat;
-        print_results((files->d_name), fileStat , a,  f,  l,  lh);
+        //struct stat fileStat;
+        //print_results((files->d_name), fileStat , a,  f,  l,  lh);
 
     }
     
     printf("\n");
+    // new_check_options(argc,argv);
     closedir(directory);
     return 0;
 }
 
-void check_options(int *a, int *f, int *l, int *lh, int argc, char **argv ,char**buffer)
+void check_options(int argc,char**argv)
 {
-    for(int i=1; i< argc ;i++)
-    {   if (!compareTwoString(argv[i],"-a"))
-        *a = TRUE;
-        else if (!compareTwoString(argv[i],"-f"))
-        *f =TRUE;
-        else if (!compareTwoString(argv[i],"-l"))
-        *l = TRUE;
-        else if (!compareTwoString(argv[i],"-lh"))
-        *lh = TRUE;
-        else if ((argv[i][0] != '-')&&(argv[i][0] != '.'))//not a flag nor . then it's a directory
-        {*buffer = argv[i];}
-        else 
-        {
-        printf("unknown option\n");
-        exit(1);
+for (int i = 1; i<argc; i++) {
+    for(int j=0 ;j<OPTIONS_LENGTH ;j++)
+    {
+        if (contains_char(argv[i], options[j])) {
+            flags[j]= TRUE;
         }
     }
-    return;
+}
+for (int i =0; i<OPTIONS_LENGTH ;i++) {
+        printf("%d\t",flags[i]);
+    }
+    printf("\n");
 }
 
-
-void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int lh)
+void print_results(char*file_name,struct stat fileStat )
 {
-    //printf("\n%d\n%s\n",l,file_name);
+    /*
     if(a==TRUE)
     {
         //if the flag is TRUE show all file names including hidden ones
@@ -105,7 +99,7 @@ void print_results(char*file_name,struct stat fileStat ,int a, int f, int l, int
     else
     {
         print_file_name(file_name);
-    }
+    }*/
 }
 void print_permissions(char *file_name , struct stat fileStat)
 {
@@ -139,22 +133,12 @@ int check_if_hidden(char *file_name)
     return file_name[0] == '.';
 }
 
-int compareTwoString(char *a, char *b)
+BOOL contains_char(char*str , char target)
 {
-    int flag = 0;
-    while (*a != '\0' && *b != '\0') 
+    for(int i =0 ; i<strlen(str);i++)
     {
-        if (*a != *b)
-        {
-            flag = 1;
-        }
-        a++;
-        b++;
+        if(str[i]==target)
+        return TRUE;
     }
- if(*a!='\0'||*b!='\0')
-       return 1;
-    if (flag == 0)
-        return 0;
-    else
-        return 1;
+    return FALSE;
 }
