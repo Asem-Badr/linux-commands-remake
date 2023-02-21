@@ -55,4 +55,4 @@ helper.o: helper.c
 
 
 clean:
-	rm -rf *.o touch cat ls pwd head echo tail
+	rm -rf *.o touch cat pwd head echo tail

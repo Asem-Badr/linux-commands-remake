@@ -4,8 +4,9 @@ todo.txt
 pwd
 touch
 cat
-ls
 head
 echo
 tail
 test
+
+ls/ls
