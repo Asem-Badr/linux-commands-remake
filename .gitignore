@@ -10,3 +10,4 @@ tail
 test
 
 ls/ls
+ls/*.out
