@@ -15,4 +15,4 @@ test_util: test_util.o util.o
 	$(CC) $(CFLAGS) $<
 
 clean:
-	rm -rf *.o
+	rm -rf *.o *.out
