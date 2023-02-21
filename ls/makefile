@@ -3,7 +3,7 @@ CFLAGS= -c -Wall
 
 all: ls
 
-test: test_util
+test: test_util.out
 
 ls: ls.o util.o
 	$(CC) ls.o util.o -o ls
