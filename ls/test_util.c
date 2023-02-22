@@ -7,6 +7,9 @@
 int test_fill_1();
 int test_fill_2();
 
+int test_is_exists_1();
+int test_is_exists_2();
+
 int main(int argc, char **argv)
 {
   if (test_fill_1() == 0)
@@ -15,6 +18,16 @@ int main(int argc, char **argv)
     printf("Test(fill) 1: failed\n");
 
   if (test_fill_2() == 0)
+    printf("Test(fill) 2: passed\n");
+  else
+    printf("Test(fill) 2: failed\n");
+
+  if (test_is_exists_1() == 0)
+    printf("Test(fill) 1: passed\n");
+  else
+    printf("Test(fill) 1: failed\n");
+
+  if (test_is_exists_2() == 0)
     printf("Test(fill) 2: passed\n");
   else
     printf("Test(fill) 2: failed\n");
@@ -45,6 +58,33 @@ int test_fill_2()
   fill(exp, 5, 'r');
 
   if (strcmp(str, exp) == 0)
+    return -1;
+  else
+    return 0;
+}
+
+int test_is_exists_1()
+{
+  char c = 'a';
+  char str[5];
+
+  fill(str, 5, 'a');
+
+  if (is_exists('a', str))
+    return 0;
+  else
+    return -1;
+}
+
+
+int test_is_exists_2()
+{
+  char c = 'a';
+  char str[5];
+
+  fill(str, 5, 'a');
+
+  if (is_exists('c', str))
     return -1;
   else
     return 0;

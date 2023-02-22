@@ -13,17 +13,17 @@ int fill(char *str, int len, char c)
   return 0;
 }
 
-// int is_exists(char c, char *str)
-// {
-//   for (int i = 0; i < strlen(str); i++)
-//   {
-//     if (c == *(str + i))
-//     {
-//       return 1;
-//     }
-//   }
-//   return 0;
-// }
+int is_exists(char c, char *str)
+{
+  for (int i = 0; i < strlen(str); i++)
+  {
+    if (c == *(str + i))
+    {
+      return 1;
+    }
+  }
+  return 0;
+}
 
 // int get_options(char *opt, int argc, char **argv)
 // {
