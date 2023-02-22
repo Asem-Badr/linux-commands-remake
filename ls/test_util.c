@@ -70,7 +70,7 @@ int test_is_exists_1()
 
   fill(str, 5, 'a');
 
-  if (is_exists('a', str))
+  if (is_exists(c, str))
     return 0;
   else
     return -1;
@@ -79,12 +79,12 @@ int test_is_exists_1()
 
 int test_is_exists_2()
 {
-  char c = 'a';
+  char c = 'r';
   char str[5];
 
   fill(str, 5, 'a');
 
-  if (is_exists('c', str))
+  if (is_exists(c, str))
     return -1;
   else
     return 0;
